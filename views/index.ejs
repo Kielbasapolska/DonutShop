@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Donutshop</title>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>	
+     
+  </head>
+  <body>
+ 
+
+
+<!-- HOME PAGE  -->
+<div data-role="page" id="homepage">
+
+	<div data-role="header">
+		 <%- include('header.ejs') %>  
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+	
+	<container>
+
+<!-- Slideshow container -->
+<div class="slideshow-container">
+
+  <!-- Full-width images with number and caption text -->
+  <div class="mySlides fade">
+	<div class="container">
+    <img src="/images/art5.png" style="width:100%">
+    <div class="content">
+    <h1>Heading</h1>
+    <p>Lorem ipsum..</p>
+	  </div>
+    </div>
+  </div>
+  
+  <div class="mySlides fade">
+	<div class="container">
+    <img src="/images/art4.png" style="width:100%">
+    <div class="content">
+    <h1>Heading</h1>
+    <p>Lorem ipsum..</p>
+	  </div>
+    </div>
+  </div>
+  
+  <div class="mySlides fade">
+	<div class="container">
+    <img src="/images/art2.png" style="width:100%">
+    <div class="content">
+    <h1>Heading</h1>
+    <p>Lorem ipsum..</p>
+	  </div>
+    </div>
+  </div>
+
+  <!-- Next and previous buttons -->
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+<br>
+
+<!-- The dots/circles -->
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+</div>
+ 
+</container>	
+		               
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<%- include('footer.ejs') %> 
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+	<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+</script>	
+
+
+<!--OUR DONUT PAGE -->
+
+<div data-role="page" id="donut">
+
+	<div data-role="header">
+		<%- include('header.ejs') %> 
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+	
+        <section>
+<h1> TRADITIONAL DONUTS </h1>
+</section> 	   
+	<div class="row">
+   <div class="column">	
+	<img src="images/baileys.png">
+	<div class="content">
+    <h1>Bailey’s Bliss </h1>
+    <p>Our Bailey’s cream filling topped with a decadent Irish liquor glaze & cookie crumb</p>
+	  </div>
+    <img src="images/coffee.png">
+	<div class="content">
+    <h1>Coffee Lover</h1>
+    <p>A delicious silky smooth latte coffee filling finished 
+	with a rich coffee glaze, chocolate drizzle and chocolate beans</p>
+	  </div>
+	<img src="images/red.png">
+	<div class="content">
+    <h1>Red Velvet</h1>
+    <p>A soft pink sourdough base filled with a delicious
+	vanilla cream cheese, raspberry chocolate ganache topped with a red velvet soil</p>
+	  </div>
+   </div>
+	
+   <div class="column">
+    <img src="images/cookie.png">
+	<div class="content">
+    <h1>Cookies & Cream</h1>
+    <p>A smooth cookies & cream filling, with a chocolate ganache & oreo cookie</p>
+	  </div>
+    <img src="images/hazelnut.png">
+	<div class="content">
+    <h1>Rafaello</h1>
+    <p>Our Limited Edition creamy white chocolate and coconout feeling topped with
+a white chocolate ganache</p>
+	  </div>
+	<img src="images/orange.png">
+	<div class="content">
+    <h1>Terry’s Chocolate Orange</h1>
+    <p>Our classic sourdough donut with a chocolate orange filling and topped with our milk chocolate ganache</p>
+	  </div>
+   </div>
+	
+	<div class="column">
+    <img src="images/kinder1.png">
+	<div class="content">
+    <h1>White Kinder</h1>
+    <p>Limited Edition creamy white chocolate hazelnut filling topped with
+a white chocolate ganache</p>
+	  </div>
+    <img src="images/kinder2.png">
+	<div class="content">
+    <h1>Kinder</h1>
+    <p>A sourdough donut with a scrumptious Kinder Bueno filling topped with a creamy white chocolate ganache.</p>
+	  </div>
+	<img src="images/peanut.png">
+	<div class="content">
+    <h1>Peanut Butter Cup</h1>
+    <p>A creamy peanut butter filling topped with milk chocolate ganache & reese’s peanut butter cup</p>
+	  </div>
+	
+  </div>
+
+   <div class="column">
+    <img src="images/lotus.png">
+	<div class="content">
+    <h1>Lotus</h1>
+    <p>A Lotus biscoff donut filled with a distinct deep caramel biscuity flavour.
+     A true hero!</p>
+	  </div>
+    <img src="images/pisstachio.png">
+	<div class="content">
+	<h1>Pisstachio</h1>
+    <p>Our luxurious home made salted caramel with a sprinkle of pistachio to give some bite</p>
+	  </div>
+	<img src="images/jam.png">
+	<div class="content">
+	<h1>Raspberry Jam</h1>
+    <p>A classic favourite with our own hand made raspberry jam tossed in sugar</p>
+	  </div>
+	</div> 
+	</div>
+	
+	
+<section>
+<h1> RING DONUTS </h1>
+</section> 
+
+	<div class="row">
+	<div class="column">
+    <img src="images/chocolate.png">
+	<div class="content">
+	<h1>Chocolate Ring </h1>
+    <p>Delicious Belgian chocolate ganache on a simple ring sourdough donut</p>
+	  </div>
+    <img src="images/vanilla.png">
+	<div class="content">
+	<h1>Vanilla Glaze</h1>
+    <p>A simple yet satisfying sourdough donut with our signature vanilla pod glaze</p>
+	  </div>
+	</div>
+	<div class="column">
+    <img src="images/unicorn.png">
+	<div class="content">
+	<h1>Unicorn Magic</h1>
+    <p>Our classic sourdough donut with our vanilla pod glaze and sprinkled with a bit of unicorn magic </p>
+	  </div>
+    <img src="images/sprinkle.png">
+	<div class="content">
+	<h1>Vanilla Sprinkle</h1>
+    <p>Our signature vanilla pod glaze and rainbow sprinkles</p>
+	  </div>
+  </div>
+  <div class="column">
+    <img src="images/vegan.png">
+	<div class="content">
+	<h1>Coffe & Valnut </h1>
+    <p>A simple yet satisfying sourdough donut with our signature vanilla pod glaze</p>
+	  </div>
+    <img src="images/lemon.png">
+	<div class="content">
+	<h1>Lemon & Poppy Seed</h1>
+    <p>Lemon and poppy seed donut. </p>
+	  </div>
+	</div> 
+	
+	<div class="column">
+    <img src="images/sugar.png">
+	<div class="content">
+	<h1>Sugar Ring</h1>
+    <p>A light fluffy sourdough donut rolled in a sugar mix, a delicious break!</p>
+	  </div>
+	<img src="images/vanveg.png">
+	<div class="content">
+	<h1>Vanilla Glaze with Pistachio</h1>
+    <p>Vanilla Glaze with Pistachio</p>
+	  </div>
+
+			</div>
+		</div> <!--end of row -->
+          
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<%- include('footer.ejs') %>  
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+
+<!--ABOUT PAGE -->
+
+<div data-role="page" id="about">
+
+	<div data-role="header">
+		<%- include('header.ejs') %>  
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+	
+   
+  <container>
+<div class="about-section">
+  <h1>About Us Page</h1>
+  <p>Some text about who we are and what we do.</p>
+  <p>Resize the browser window to see that this page is responsive by the way.</p>
+</div>
+
+<h2 style="text-align:center">Our Shops</h2>
+<div class="row">
+  <div class="column">
+    <div class="card">
+      <img src="/images/building1.png" alt="building1" style="width:100%">
+      <div class="container">
+        <h2>Dublin</h2>
+        <p class="title">City Centre</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>jane@example.com</p>
+
+        <div style="display:none;" class="more">Other text 1</div>
+        <button class="showHide">Show more</button>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="/images/building2.png" alt="building2" style="width:100%">
+      <div class="container">
+        <h2>Howth</h2>
+        <p class="title">Dublin</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>mike@example.com</p>
+         <div style="display:none;" class="more">Other text 1</div>
+        <button class="showHide">Show more</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="/images/building3.png" alt="building 3" style="width:100%">
+      <div class="container">
+        <h2>Cork</h2>
+        <p class="title">City Centre</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>john@example.com</p>
+		 <div style="display:none;" class="more">Other text 1</div>
+        <button class="showHide">Show more</button>
+      </div>
+    </div>
+  </div>
+</div>
+</container>	
+	    
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<%- include('footer.ejs') %>  
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<script>
+var content = document.getElementById("content");
+
+$(".showHide").on("click", function() {
+    $(this).parent().find(".more").toggle();
+    if ($(this).parent().find(".more").is(":visible")) {
+        $(this).text("Show less");
+    } else {
+        $(this).text("Show more");
+    }
+});
+</script>
+
+
+
+<!--REGISTER PAGE -->
+
+<div data-role="page" id="register">
+
+	<div data-role="header">
+		<%- include('header.ejs') %>  
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+	
+    
+    Username <input type="text" id="username"/> <br>
+
+    E-mail <input type="text" id="email"/> <br>
+    
+	<!-- Password field -->
+	Password: <input type="password" value="" id="password"> </br>
+	<!-- An element to toggle between password visibility -->
+	<input type="checkbox" onclick="myFunction()"></br>Show Password
+
+    <button id="submitbutton"> Submit Button </button>
+       
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<%- include('footer.ejs') %>  
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<!--script for coding the password -->
+<script>
+function myFunction() {
+  var x = document.getElementById("password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
+<script>
+// when the submitbutton is clicked
+$( "#submitbutton" ).click(function(event) {
+  // stop the default redirect of the browser
+  
+  // grab the values
+  var username = $('#username').val();
+  var email = $('#email').val();
+  var password = $('#password').val();
+  
+  
+  var isValid = true;
+  
+  if(username == ""){
+     alert("Please enter a username");
+     isValid = false;
+  }
+  if(!email.includes("@")){
+     alert("Please enter a valid email");
+     isValid = false;
+  }
+
+ // only send the data to the database, if the param is true.
+  if(isValid == true){
+      // send the data to the server-side
+      $.post( "/putInDatabase", { username: username, email: email, password:password, })
+      .done(function( data ) {
+		
+		document.getElementById("submitbutton").onclick = function () {
+        window.location.href = "#login";
+    };
+      });
+  }
+     
+});
+
+</script>
+
+
+<!--LOGIN PAGE -->
+
+<div data-role="page" id="login">
+
+	<div data-role="header">
+		 <%- include('header.ejs') %>  
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		<container>
+	
+		<div class="logintext">
+        <p> Login here to order online </p>
+        </div>
+		
+        Username <input type="text" id="loginUsername"/> <br>
+        Password <input type="text" id="loginPassword"/> <br>
+
+         <button id="loginbutton"> Login Button </button>
+         
+		 <div class="dont">
+         <p> Dont have an account? --> <a href="#register" data-link>Register here</a> </p>
+        </div>        
+      </container>   
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		 <%- include('footer.ejs') %> 
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<script>
+// when the submitbutton is clicked
+$( "#loginbutton" ).click(function(event) {
+  // stop the default redirect of the browser
+  event.preventDefault();
+  
+  // grabbing the values
+  var un = $('#loginUsername').val();
+  var pw = $('#loginPassword').val();
+  document.getElementById("someInput").innerHTML = un;
+   
+  if(un == "")
+  {
+     alert("Please enter a username");
+  }
+  if(pw ==""){
+    alert("please enter a password");
+  }
+  
+  
+  $.post( "/checkTheLogin", { username: un, password: pw })
+      .done(function( data ) {
+        // say what the account type is
+        alert( "Data Loaded: " + data );
+        
+        if(data.includes("customer")){
+        
+           // move to the customer dashboard
+           window.location="/#customerdash";
+        }
+        else if(data.includes("driver")){
+		   
+		   // make a call to the severside to get the data!
+            $.get( "/getDriverData", function( data ) {
+            // throw the data onto the manager page
+                $( "#driverOutput" ).html( data );
+          
+            });
+                        
+           // move to the driver dashboard
+           window.location="/#driver";
+		   
+        }
+        else if(data.includes("manager")){
+        
+        
+           // make a call to the severside to get the data!
+            $.get( "/getManagerData", function( data ) {
+            // throw the data onto the manager page
+                $( "#managerOutput" ).html( data );
+          
+            });
+                        
+           // move to the manager dashboard
+           window.location="/#manager";
+        }
+         
+      }); 
+  
+ }); 
+  
+</script>
+
+<script>
+var myCart = [];
+
+</script>
+
+<!-- CUSTOMERDASH PAGE -->
+
+<div data-role="page" id="customerdash">
+
+
+	<div data-role="header">
+		 <%- include('header.ejs') %> 
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content"> 
+	
+        <div class="ui-field-contain">
+		
+	<section>
+	<h1> TRADITIONAL DONUTS </h1>
+	</section> 
+	 
+	<div class="row">
+    <div class="column">
+    <div class="container">
+	<img src="images/baileys.png">
+    <div class="bottom-left">Baileys</div>
+   </div>
+	<div class="content"> 
+   <select id="bailey_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('bailey_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('bailey_qty')">Delete product </button></p>
+	  </div>
+    
+	<div class="container">
+	<img src="images/coffee.png">
+	<div class="bottom-left">Coffee Lovers</div>
+	</div>
+	<div class="content"> 
+	<select id="coffee_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('coffee_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('coffee_qty')">Delete product </button></p>
+	  </div>
+	  
+    <div class="container">
+	<img src="images/red.png">
+	<div class="bottom-left">Red Velvet</div>
+	</div>
+	<div class="content"> 
+	<select id="red_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('red_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('red_qty')">Delete product </button></p>
+	  </div> 
+  </div>
+  <div class="column">
+   <div class="container">
+    <img src="images/cookie.png">
+	 <div class="bottom-left">Cookie&Cream</div>
+</div>
+	<div class="content"> 
+<select id="cookie_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('cookie_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('cookie_qty')">Delete product </button></p>
+	  </div> 
+		
+    <div class="container">
+    <img src="images/hazelnut.png">
+	<div class="bottom-left">Rafaello</div>
+</div>
+	<div class="content"> 
+<select id="rafaello_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('rafaello_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('rafaello_qty')">Delete product </button></p>
+	  </div> 
+     <div class="container"> 
+	<img src="images/orange.png">
+	<div class="bottom-left">Terry’s Chocolate Orange</div>
+</div>
+	<div class="content"> 
+<select id="terry_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('terry_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('terry_qty')">Delete product </button></p>
+	  </div> 
+  </div>
+  <div class="column">
+    <div class="container"> 
+    <img src="images/kinder1.png">
+	<div class="bottom-left">White Kinder</div>
+</div>
+	<div class="content"> 
+<select id="whitekinder_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('whitekinder_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('whitekinder_qty')">Delete product </button></p>
+	  </div> 
+    <div class="container">
+	<img src="images/kinder2.png">
+	<div class="bottom-left">Kinder</div>
+</div>
+	<div class="content"> 
+<select id="kinder_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('kinder_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('kinder_qty')">Delete product </button></p>
+	  </div> 
+     <div class="container">
+	<img src="images/peanut.png">
+	<div class="bottom-left">Peanut Butter Cup</div>
+</div>
+	<div class="content"> 
+<select id="peanut_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('peanut_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('peanut_qty')">Delete product </button></p>
+	  </div> 
+   
+  </div>
+  <div class="column">
+   <div class="container">
+    <img src="images/lotus.png">
+	<div class="bottom-left">Lotus</div>
+</div>
+	<div class="content"> 
+<select id="lotus_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('lotus_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('lotus_qty')">Delete product </button></p>
+	  </div> 
+	
+    <div class="container">
+    <img src="images/pisstachio.png">
+	<div class="bottom-left">Pisstachio</div>
+</div>
+	<div class="content"> 
+<select id="pisstachio_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('pisstachio_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('pisstachio_qty')">Delete product </button></p>
+	  </div> 
+   <div class="container">
+	<img src="images/jam.png">
+	<div class="bottom-left">Raspberry Jam</div>
+</div>
+	<div class="content"> 
+<select id="jam_qty" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('jam_qty')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('jam_qty')">Delete product </button></p>
+	  </div> 
+   
+	</div>
+	</div>
+	<section>
+	<h1> RING DONUTS </h1>
+	</section> 
+			   
+		   <button id="goToCheckout"> Checkout </button>
+        </div>  <!--end of ui-field-content--> 
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		 <%- include('footer.ejs') %> 
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<!-- BASKET PAGE  !!!!!!!!!!!!!! -->
+
+<div data-role="page" id="checkoutreview">
+
+	<div data-role="header">
+		 <%- include('header.ejs') %> 
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		 
+            
+          <div id="products">
+          </div>
+        
+         <button id="insertintodb">Confirm and pay</button>
+        
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		 <%- include('footer.ejs') %> 
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<script>
+
+$( "#insertintodb" ).click(function() {
+
+    // get the persons username
+     var orderby = $('#loginUsername').val();
+     
+     // get the list of products from the shopping cart
+     var items = myCart.toString();
+     
+     $.post( "/completeCheckout", { orderby:orderby, items:items })
+          .done(function( data ) {
+            alert( "Data Loaded: " + data );
+          });      
+
+});
+</script>
+
+
+<script>
+
+$( "#goToCheckout" ).click(function() {
+
+        // update the div tag with the shopping cart
+        
+        var cartItems = myCart.toString().split(',');
+        // for each record, append them to the procuts div.
+        
+        // wipe the products div tag!
+        $('#products').html('');
+        
+        for(var i=0; i< cartItems.length; i++){
+            $('#products').append(cartItems[i] + '<br>');
+        }      
+
+        // move to to the checkout review
+        window.location="/#checkoutreview";
+});
+
+
+function deleteProduct(item){
+    
+    // loop over the cart
+    myCart.forEach(function(itemCurrent, index, array) {
+                
+               // look for the item we want to delete.
+               if(itemCurrent.includes(item)){
+                  console.log("Removing previous reference to " + item);
+                  myCart.pop(index);
+				 
+               }
+        });
+}
+
+function addToCart(itemName){
+    // finding out the name of the ITEM we are adding
+    var item = itemName;
+	console.log(item);
+    
+    // dynamically find out the qty
+	var qty = $('#'+item).children("option:selected").val();
+	console.log(qty);
+    
+    // search the cart and see if we already added
+    // the item. If we did, remove the old qty.
+    console.log("Searching to see if record already exists");
+    myCart.forEach(function(itemCurrent, index, array) {
+           
+           console.log("in array" + itemCurrent);
+           
+           if(itemCurrent.includes(itemName)){
+              console.log("Removing previous reference to " + itemName);
+                var indexx = array.indexOf(itemCurrent);
+                if (indexx !== -1) {
+                  array.splice(indexx, 1);
+                }
+           }
+    });
+    
+    
+    // add the item to the cart
+    myCart.push(item + '-' + qty);
+    
+    alert(myCart);
+
+}
+
+</script>
+
+
+<div data-role="page" id="manager">
+
+	<div data-role="header">
+		 <%- include('header.ejs') %> 
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+	 
+        
+        <div id="managerOutput">
+        
+	
+        </div>        		
+		
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		 <%- include('footer.ejs') %> 
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+  
+<div data-role="page" id="driver">
+
+
+  
+	<div data-role="header">
+		 <%- include('header.ejs') %> 
+	</div><!-- /header -->
+     
+	 
+	  <h2>Hello, <span id="someInput"> </span> </h2> 
+	  
+	<div role="main" class="ui-content">
+	<a class="weatherwidget-io" href="https://forecast7.com/en/53d35n6d26/dublin/" data-label_1="DUBLIN" data-label_2="WEATHER" data-theme="original" >DUBLIN WEATHER</a>
+	<script>
+	!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+	</script>
+	  
+
+     <div id="driverOutput">
+	 
+	 
+	 
+	 </div>
+	
+		
+	</div><!-- /content -->
+
+
+	<div data-role="footer">
+		 <%- include('footer.ejs') %> 
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
