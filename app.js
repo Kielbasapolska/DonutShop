@@ -3,11 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session=require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var app = express();
+var app = express()
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true, maxAge:50000 }
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,11 +40,9 @@ app.get('/getDriverData', function (req, res) {
   var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  database: "donuts",
+  database: "test",
   password: ""
   });
-  
- 
 
   con.connect(function(err) {
   if (err) throw err;
@@ -46,16 +52,18 @@ app.get('/getDriverData', function (req, res) {
  
  // hold the data that we going to send back.
 var outp = ''; 
+
   // looping over the records
  for(var i=0; i< result.length; i++){
 	 outp=outp+`
-<tr>
-  <td>  </td>
-   <td><div class="ui-field-contain"></td>
-   <td>"`+result[i].orderstatus+`"</td>
-    <td> "`+result[i].orderby+`"</td>   
-	</tr>
-	</div>
+
+<tr> 
+   <td>"`+result[i].orderby+`"</td>
+   <td>"`+result[i].orderstatus+`"</td>  
+   <td>empty</td>  	
+</tr>
+</div>
+	
 	`;
     }
     
@@ -77,11 +85,10 @@ app.get('/getManagerData', function (req, res) {
   var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  database: "donuts",
+  database: "test",
   password: ""
   });
-  
-  
+   
    
 // hold the data that we going to send back.
 var output = '';
@@ -89,15 +96,30 @@ var output = '';
 
   con.connect(function(err) {
   if (err) throw err;
-  con.query("SELECT orderby, items FROM customerorders;", function (err, result, fields) {
+  con.query("SELECT orderby, items, pictures FROM customerorders;", function (err, result, fields) {
     if (err) throw err;
     console.log(result);
    
     
     // looping over the records
     for(var i=0; i< result.length; i++){
-        output = output + result[i].orderby + '---' + result[i].items + '<br>';
-    }
+        output = output +`
+		
+	<div class="column">
+    <div class="container">
+	 <img src="`+result[i].pictures+`">
+    <div class="bottom-left">`+result[i].orderby+`</div>
+   </div>
+	<div class="content"> 
+ 
+	<p><textarea name="message" rows="3" cols="20">`+ result[i].items +`</textarea></p>
+    
+	</div>
+	</div>
+	
+	
+    `}
+	    
     
      // return the output variable
     res.send(output);   
@@ -108,10 +130,18 @@ var output = '';
 });
 
 app.post('/checkTheLogin', function (req, res) {
-   
+	 
    // catching the variables
   var username = req.body.username;  
   var pass = req.body.password;
+  
+   req.session.username=username;
+   req.session.validSession=true;
+   
+   var sessionTime = req.session.cookie.maxAge /1000;
+   console.log("Time left" + sessionTime);
+   
+   
    
   // put the data in the database
   // pulling in mysql
@@ -120,7 +150,7 @@ app.post('/checkTheLogin', function (req, res) {
   var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  database: "donuts",
+  database: "test",
   password: ""
   });
   
@@ -140,10 +170,7 @@ app.post('/checkTheLogin', function (req, res) {
   
 });
 
-
-
-
-app.get('/getImage', function (req, res) {
+/*app.get('/getImage', function (req, res) {
    
 
   // put the data in the database
@@ -153,7 +180,7 @@ app.get('/getImage', function (req, res) {
   var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  database: "donuts",
+  database: "test",
   password: ""
   });
   
@@ -164,24 +191,19 @@ app.get('/getImage', function (req, res) {
   con.query("SELECT picture FROM products WHERE id = 15", function (err, result, fields) {
     if (err) throw err;
    
-    res.send(result[0].picture);
-    
-    
-    
+    res.send(result[0].picture);   
     
     
   });
 });
-
-   
    
   
 });
+*/
 
-
-app.get('/getImageFromFile', function (req, res) {
+app.get('/getProducts', function (req, res) {
    
-
+   
   // put the data in the database
   // pulling in mysql
   var mysql = require('mysql');
@@ -189,30 +211,72 @@ app.get('/getImageFromFile', function (req, res) {
   var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  database: "donuts",
+  database: "test",
   password: ""
   });
   
   
-  
-  con.connect(function(err) {
+    con.connect(function(err) {
   if (err) throw err;
-  con.query("SELECT picturepath FROM products WHERE id = 18", function (err, result, fields) {
+  con.query("SELECT * from products", function (err, result, fields) {
     if (err) throw err;
    
-    res.send(result[0].picturepath);
     
+    var output = '';
+    for(var i=0; i < result.length; i++){
+        
+
+       output = output + `
+       
+      	 
+
+    <div class="column">
+    <div class="container">
+	 <img src="`+result[i].picturepath+`">
+    <div class="bottom-left">`+result[i].productname+`</div>
+   </div>
+	<div class="content"> 
+   <select id="`+result[i].productname+`" name="select-native-2" id="select-native-2" data-mini="true">
+        <option value=""></option>
+		<option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select></h1>
+    <p><button id="addtocart" onclick="addToCart('`+result[i].productname+` `+result[i].qty+`')"> Add To Cart </button></p>
+	<p><button id="deleteProduct" onclick="deleteProduct('`+result[i].productname+` `+result[i].qty+`')">Delete product </button></p>
     
-    
-    
+	</div>
+	</div>
+	
+	
+    `}
+        
+    res.send(output);
+        
     
   });
 });
-
-   
-   
+  
   
 });
+
+
+
+
+
+app.post('/putInSession', function (req, res) {
+
+      var cart = req.body.cart;
+      
+      
+      req.session.cart = cart;
+      
+      res.send("all ok");
+
+
+});
+
 
 app.post('/putInDatabase', function (req, res) {
   
@@ -231,7 +295,7 @@ app.post('/putInDatabase', function (req, res) {
   var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  database: "donuts",
+  database: "test",
   password: ""
   });
   
@@ -251,13 +315,27 @@ app.post('/putInDatabase', function (req, res) {
   
 })
 
+app.get('/checkIfTimeLeft', function (req, res) {  
+  var sessionTime = req.session.cookie.maxAge /1000;
+   console.log(sessionTime);
+  if(sessionTime < 10) {
+	res.send('Time expired');  
+	  
+  } else {
+	  
+	 res.send('ok'); 
+  }
+  	
+});
 
 
 app.post('/completeCheckout', function (req, res) {
-  
+	
+
   // catching the variables
   var orderby = req.body.orderby;
   var items = req.body.items;
+  
 
   
   // put the data in the database
@@ -269,7 +347,7 @@ app.post('/completeCheckout', function (req, res) {
   var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  database: "donuts",
+  database: "test",
   password: ""
   });
   
