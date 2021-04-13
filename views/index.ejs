@@ -6,7 +6,7 @@
 	<link rel='stylesheet' href='/stylesheets/style.css' />
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>	
-     
+     <script src = "javascripts/index.js"></script>
   </head>
   <body>
  
@@ -359,9 +359,6 @@ $(".showHide").on("click", function() {
 </script>
 
 
-
-<!--REGISTER PAGE -->
-
 <div data-role="page" id="register">
 
 	<div data-role="header">
@@ -375,41 +372,33 @@ $(".showHide").on("click", function() {
 
     E-mail <input type="text" id="email"/> <br>
     
-	<!-- Password field -->
-	Password: <input type="password" value="" id="password"> </br>
-	<!-- An element to toggle between password visibility -->
-	<input type="checkbox" onclick="myFunction()"></br>Show Password
+    Password <input type="text" id="password"/> <br>
+    <input type="checkbox" onclick="myFunction()"></br>Show Password
 
     <button id="submitbutton"> Submit Button </button>
-       
+    
+    
+    
 	</div><!-- /content -->
 
-	<div data-role="footer">
+		<div data-role="header">
 		<%- include('footer.ejs') %>  
-	</div><!-- /footer -->
+	</div><!-- /header -->
 </div><!-- /page -->
 
 
-<!--script for coding the password -->
-<script>
-function myFunction() {
-  var x = document.getElementById("password");
-  if (x.type === "password") {
-    x.type = "text";
-  } else {
-    x.type = "password";
-  }
-}
-</script>
+
 <script>
 // when the submitbutton is clicked
 $( "#submitbutton" ).click(function(event) {
   // stop the default redirect of the browser
+  event.preventDefault();
   
   // grab the values
   var username = $('#username').val();
   var email = $('#email').val();
   var password = $('#password').val();
+
   
   
   var isValid = true;
@@ -426,30 +415,28 @@ $( "#submitbutton" ).click(function(event) {
  // only send the data to the database, if the param is true.
   if(isValid == true){
       // send the data to the server-side
-      $.post( "/putInDatabase", { username: username, email: email, password:password, })
+      $.post( "/putInDatabase", { username: username, email: email, password:password})
       .done(function( data ) {
-		
-		document.getElementById("submitbutton").onclick = function () {
-        window.location.href = "#login";
-    };
+        alert( "Data Loaded: " + data );
       });
   }
-     
+  
+  
+  
 });
 
 </script>
 
 
-<!--LOGIN PAGE -->
 
 <div data-role="page" id="login">
 
-	<div data-role="header">
-		 <%- include('header.ejs') %>  
+		<div data-role="header">
+		<%- include('header.ejs') %>  
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content">
-		<container>
+        <container>
 	
 		<div class="logintext">
         <p> Login here to order online </p>
@@ -461,14 +448,14 @@ $( "#submitbutton" ).click(function(event) {
          <button id="loginbutton"> Login Button </button>
          
 		 <div class="dont">
-         <p> Dont have an account? --> <a href="#register" data-link>Register here</a> </p>
+         <h2> Dont have an account? --> <a href="#register" data-link>Register here</a> </h2>
         </div>        
       </container>   
 	</div><!-- /content -->
 
-	<div data-role="footer">
-		 <%- include('footer.ejs') %> 
-	</div><!-- /footer -->
+		<div data-role="header">
+		<%- include('footer.ejs') %>  
+	</div><!-- /header -->
 </div><!-- /page -->
 
 <script>
@@ -480,8 +467,7 @@ $( "#loginbutton" ).click(function(event) {
   // grabbing the values
   var un = $('#loginUsername').val();
   var pw = $('#loginPassword').val();
-  document.getElementById("someInput").innerHTML = un;
-   
+  
   if(un == "")
   {
      alert("Please enter a username");
@@ -491,30 +477,21 @@ $( "#loginbutton" ).click(function(event) {
   }
   
   
-  $.post( "/checkTheLogin", { username: un, password: pw })
-      .done(function( data ) {
-        // say what the account type is
-        alert( "Data Loaded: " + data );
-        
-        if(data.includes("customer")){
+  
+  var accountType = checkTheLogin(un, pw);
+  
+  
+     
+        if(accountType.includes("customer")){
         
            // move to the customer dashboard
            window.location="/#customerdash";
         }
-        else if(data.includes("driver")){
-		   
-		   // make a call to the severside to get the data!
-            $.get( "/getDriverData", function( data ) {
-            // throw the data onto the manager page
-                $( "#driverOutput" ).html( data );
-          
-            });
-                        
+        else if(accountType.includes("driver")){
+        
            // move to the driver dashboard
-           window.location="/#driver";
-		   
         }
-        else if(data.includes("manager")){
+        else if(accountType.includes("manager")){
         
         
            // make a call to the severside to get the data!
@@ -523,16 +500,17 @@ $( "#loginbutton" ).click(function(event) {
                 $( "#managerOutput" ).html( data );
           
             });
-                        
+                
+        
            // move to the manager dashboard
            window.location="/#manager";
         }
-         
-      }); 
   
- }); 
   
+  
+   });  
 </script>
+
 
 <script>
 var myCart = [];
@@ -542,6 +520,7 @@ var myCart = [];
 <!-- CUSTOMERDASH PAGE -->
 
 <div data-role="page" id="customerdash">
+
 
 
 	<div data-role="header">
@@ -558,10 +537,8 @@ var myCart = [];
 	
 	   </section>   
 
-	  <div id="productdata"> </div> 
-	    
-         							
-			   
+	  <div id="productdata"> </div> 	    
+         								   
 		   <button id="goToCheckout"> Checkout </button>
         </div>  <!--end of ui-field-content--> 
 	</div><!-- /content -->
@@ -572,11 +549,13 @@ var myCart = [];
 </div><!-- /page -->
 
 
-     <script>
+ <script>
          $.get( "/getProducts", function( data ) {   
                $("#productdata").html(data);          
         });											 
-         </script>
+
+</script>
+	 
 
 <!----BASKET PAGE  !!!!!!!!!!!!!! -->
 
@@ -588,10 +567,26 @@ var myCart = [];
 
 	<div role="main" class="ui-content">
 		 
-            
+         <div class="logintext1">
+        <p> Your order:  </p>
+        </div> 
           <div id="products">
-          </div>
+		  </div>
         
+		<div class="logintext">
+        <p> Please provide your details for delivery:  </p>
+        </div>
+		
+			<label for="fname">First name:</label><br>
+			<input type="text" id="name" name="name"><br>
+			<label for="sname">Last name:</label><br>
+			<input type="text" id="surname" name="surname"><br>
+			<label for="addr">Address:</label><br>
+			<input type="text" id="address" name="address"><br>
+			<label for="city">City:</label><br>
+			<input type="text" id="city" name="city"><br>							
+			<br>
+	
          <button id="insertintodb">Confirm and pay</button>
         
 	</div><!-- /content -->
@@ -601,30 +596,33 @@ var myCart = [];
 	</div><!-- /footer -->
 </div><!-- /page -->
 
+
 <script>
 
 $( "#insertintodb" ).click(function() {
 
     // get the persons username
      var orderby = $('#loginUsername').val();
+	 var name=$('#name').val();
+	 var surname=$('#surname').val();
+	 var address=$('#address').val();
+	 var city=$('#city').val();
+	 
      
      // get the list of products from the shopping cart
      var items = myCart.toString();
      
-     $.post( "/completeCheckout", { orderby:orderby, items:items })
+     $.post( "/completeCheckout", { orderby:orderby, items:items, name:name, surname:surname, address:address, city:city })
           .done(function( data ) {
             alert( "Data Loaded: " + data );
           });      
 
-	});
-	</script>
-     
+});
+</script>
+
 <script>
-
-
 // this function triggers, every time a page is loaded
 $(document).on("pagecreate",function(event){
-  
   
   $.get( "/checkIfTimeLeft", function( data ) {
  
@@ -639,6 +637,8 @@ $(document).on("pagecreate",function(event){
   
 });
 
+
+
 $( "#goToCheckout" ).click(function() {
 
         // update the div tag with the shopping cart
@@ -648,10 +648,25 @@ $( "#goToCheckout" ).click(function() {
         
         // wipe the products div tag!
         $('#products').html('');
+		
+		var total = 0;
+		for (var i=0; i< cartItems.length; i++){
+		
+		var singleRecord = cartItems[i].split('-');
+		
+		//after split     record 1 which is qty and cost 
+		var itemTotal = singleRecord[1]* singleRecord[2];
+		
+		//adding to a total 
+		total=total + itemTotal;
+		 $('#products').append(cartItems[i] + '<br>');
+		
+		}
         
-        for(var i=0; i< cartItems.length; i++){
-            $('#products').append(cartItems[i] + '<br>');
-        }      
+        
+            $('#products').append(`<div class="logintext1">Total cost of order:  ` +total+ `$ </div>`);
+			
+            
 
         // move to to the checkout review
         window.location="/#checkoutreview";
@@ -667,12 +682,13 @@ function deleteProduct(item){
                if(itemCurrent.includes(item)){
                   console.log("Removing previous reference to " + item);
                   myCart.pop(index);
+				  alert("Data deleted: "+ item);
 				 
                }
         });
 }
 
-function addToCart(itemName){
+function addToCart(itemName, cost){
     // finding out the name of the ITEM we are adding
     var item = itemName;
 	console.log(item);
@@ -683,28 +699,23 @@ function addToCart(itemName){
     
     // search the cart and see if we already added
     // the item. If we did, remove the old qty.
-    console.log("Searching to see if record already exists");
+
     myCart.forEach(function(itemCurrent, index, array) {
            
-           console.log("in array" + itemCurrent);
-           
-           if(itemCurrent.includes(itemName)){
-              console.log("Removing previous reference to " + itemName);
-                var indexx = array.indexOf(itemCurrent);
-                if (indexx !== -1) {
-                  array.splice(indexx, 1);
-                }
+                     
+           if(itemCurrent.includes(item)){
+              console.log("Removing previous reference to " + item);
+              myCart.pop(index);
            }
     });
-    
-    
+        
     // add the item to the cart
-    myCart.push(item + '-----' + qty);
+    myCart.push(item + '-' + qty + '-' + cost);
     
     alert(myCart);
-	
-	//put in the card products into session
-	$post("/putInSession", {cart: myCart} );
+
+    // put in the session
+    $.post( "/putInSession", { cart: myCart} );    
 
 }
 
@@ -720,9 +731,7 @@ function addToCart(itemName){
 	<div role="main" class="ui-content">
 	 
         
-        <div id="managerOutput">
-        
-	
+        <div id="managerOutput">	
         </div>        		
 		
 	</div><!-- /content -->
@@ -741,7 +750,11 @@ function addToCart(itemName){
 	</div><!-- /header -->
      
 	 
-	<h2>Hello, <span id="someInput"> </span> </h2> 
+	<div class="logintext"> 
+	<p>Hello, <span id="someInput"> </span> </p>
+	</div> 
+	 <button onclick="myClick()">Check the time and date </button>
+	<p id="demo"></p> 
 	  
 	<div role="main" class="ui-content">
 	<a class="weatherwidget-io" href="https://forecast7.com/en/53d35n6d26/dublin/" data-label_1="DUBLIN" data-label_2="WEATHER" data-theme="original" >DUBLIN WEATHER</a>
@@ -749,17 +762,13 @@ function addToCart(itemName){
 	!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
 	</script>
 		 
-	<table>
- 
-  <tr>
-    <th>Username </th>
-    <th>Order Status</th>
-    <th>Price</th>
-  </tr>
-  
+
+	 
 	  <div id="driverOutput">  
-	  </div> </table>
+	  </div>
 	
+	
+   
 	</div><!-- /content -->
 
 	<div data-role="footer">
@@ -767,8 +776,22 @@ function addToCart(itemName){
 	</div><!-- /footer -->
 </div><!-- /page -->
 
+<script>
+	function myClick(){
+	var d = new Date();
+	document.getElementById("demo").innerHTML = d;
+	}
+	</script>
 
 
+
+
+
+<script>
+
+function returnName() {
+ return 'basie';
+}
 
 
 

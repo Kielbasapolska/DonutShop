@@ -18,7 +18,9 @@
     "shuffle-array": "^1.0.1"
   },
   "main": "app.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "qunit": "^2.14.1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
