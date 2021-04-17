@@ -375,7 +375,7 @@ $(".showHide").on("click", function() {
     Password <input type="text" id="password"/> <br>
     <input type="checkbox" onclick="myFunction()"></br>Show Password
 
-    <button id="submitbutton"> Submit Button </button>
+     <button id="submitbutton"> Submit Button </button>
     
     
     
@@ -489,8 +489,11 @@ $( "#loginbutton" ).click(function(event) {
         }
         else if(accountType.includes("driver")){
         
-           // move to the driver dashboard
-        }
+          $.get( "/select", function( data ) {
+            // throw the data onto the manager page
+                $( "#driverOutput" ).html( data );
+          
+            });
         else if(accountType.includes("manager")){
         
         

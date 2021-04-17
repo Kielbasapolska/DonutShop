@@ -17,7 +17,7 @@ app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true, maxAge: 60000 }
+  cookie: { secure: false, maxAge: 60000 }
 }))
 
 
@@ -44,7 +44,33 @@ app.get('/testSession', function (req, res) {
  
     res.send("hello" + temp);
  
-});
+})
+//timestamp
+var log = console.log;
+
+console.log = function () {
+    var first_parameter = arguments[0];
+    var other_parameters = Array.prototype.slice.call(arguments, 1);
+
+    function formatConsoleDate (date) {
+        var hour = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        var milliseconds = date.getMilliseconds();
+
+        return '[' +
+               ((hour < 10) ? '0' + hour: hour) +
+               ':' +
+               ((minutes < 10) ? '0' + minutes: minutes) +
+               ':' +
+               ((seconds < 10) ? '0' + seconds: seconds) +
+               '.' +
+               ('00' + milliseconds).slice(-3) +
+               '] ';
+    }
+
+    log.apply(console, [formatConsoleDate(new Date()) + first_parameter].concat(other_parameters));
+};
 
   
   // put the data in the database
@@ -371,10 +397,11 @@ app.post('/putInDatabase', function (req, res) {
   console.log(sql);
   con.query(sql, function (err, result) {
     if (err) throw err;
-    console.log("1 record inserted");
   });
 });
+
   res.send('Data went to the database');
+  res.redirect('/#login');
   
   
 })
