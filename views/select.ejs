@@ -24,9 +24,9 @@
 	  <%customerorders.forEach(function(item) { %> 
 	 
 	 <tr>
-	 <td><%= item.id %></td>
-	 <td><%=item.orderby %></td>
-	 <td><%=item.orderstatus %></td>
+	 <td>`+result[i].id+`</td>
+	 <td>`+result[i].orderby+`</td>
+	 <td>`+ result[i].items +`></td>
 	 <td>
 	 <a href="/delete?id=<%= item.id %>" onClick="return confirm('Are you sure?')">Delete</a>
 	 <a href="/edit?id=<%= item.id %>">Edit</a>
@@ -37,5 +37,29 @@
 	 </table>
 	
 
-
+	 
+	 <h1> Customer DataTable </h1>
+	 
+	 <a href="/form">Insert Form</a>
+	 <table>
+	 <tr>
+	 <td>id</td>
+	 <td>orderby</td>
+	 <td>order status</td>
+	 </tr>
+	 
+	 <tr>
+	 <td>`+result[i].id+`</td>
+	 <td>`+result[i].orderby+`</td>
+	 <td>`+ result[i].items +`></td>
+	 <td>
+	 <a href="/delete?id=<%= item.id %>" onClick="return confirm('Are you sure?')">Delete</a>
+	 <a href="/edit?id=<%= item.id %>">Edit</a>
+	 </td>
+	 </tr>
+	 <% }); %>
+	 
+	 </table>
+	
+    `
 	

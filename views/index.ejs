@@ -372,10 +372,10 @@ $(".showHide").on("click", function() {
 
     E-mail <input type="text" id="email"/> <br>
     
-    Password <input type="text" id="password"/> <br>
+    Password <input type="password" id="password"/> <br>
     <input type="checkbox" onclick="myFunction()"></br>Show Password
 
-     <button id="submitbutton"> Submit Button </button>
+    <button id="submitbutton"> Submit Button </button>
     
     
     
@@ -386,6 +386,19 @@ $(".showHide").on("click", function() {
 	</div><!-- /header -->
 </div><!-- /page -->
 
+
+
+<script>
+function myFunction() {
+  var x = document.getElementById("password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+
+</script>
 
 
 <script>
@@ -418,6 +431,7 @@ $( "#submitbutton" ).click(function(event) {
       $.post( "/putInDatabase", { username: username, email: email, password:password})
       .done(function( data ) {
         alert( "Data Loaded: " + data );
+		window.location="/#login";
       });
   }
   
@@ -467,6 +481,7 @@ $( "#loginbutton" ).click(function(event) {
   // grabbing the values
   var un = $('#loginUsername').val();
   var pw = $('#loginPassword').val();
+  document.getElementById("someInput").innerHTML = un;
   
   if(un == "")
   {
@@ -489,11 +504,17 @@ $( "#loginbutton" ).click(function(event) {
         }
         else if(accountType.includes("driver")){
         
-          $.get( "/select", function( data ) {
+           // make a call to the severside to get the data!
+            $.get( "/getDriverData", function( data ) {
             // throw the data onto the manager page
                 $( "#driverOutput" ).html( data );
           
             });
+                
+        
+           // move to the manager dashboard
+           window.location="/#driver";
+        }
         else if(accountType.includes("manager")){
         
         
@@ -737,12 +758,76 @@ function addToCart(itemName, cost){
         <div id="managerOutput">	
         </div>        		
 		
+		
+	<section>
+     <h1> Show reports from previous days </h1>
+	  </section>
+	  
+	<select id="getOrderByRange">
+	<option value = "1"> 1 day </option>
+	<option value = "7"> 7 day </option>
+	<option value = "30"> 30 day </option>
+	
+	</select>
+	<button onclick="getRangeData()"> Show orders </button>
+		
+	<div id="rangeData">
+    
+    </div>	
+		
+		
+		
 	</div><!-- /content -->
 
 	<div data-role="footer">
 		 <%- include('footer.ejs') %> 
 	</div><!-- /footer -->
 </div><!-- /page -->
+
+
+<script> 
+function  getRangeData(){
+
+//1 , 7 or 30 days 
+var range = $('#getOrderByRange').children("option:selected").val();
+
+alert(range);
+ 
+            $.post( "/getRangeData", {range:range } )
+               .done(function(data){            
+                $( '#rangeData' ).html( data );
+               });
+ 
+}
+</script>
+
+
+<script>
+
+$(document).on("pageshow","#manager",function(){ // When entering pagetwo
+
+  $.get( "/getManagerData", function( data ) {
+
+    // throw the data onto the manager page
+
+        $( "#managerOutput" ).html( data );
+
+ 
+
+    });
+
+});
+
+ 
+
+</script>
+
+
+
+
+
+
+
 
 
   
@@ -786,14 +871,65 @@ function addToCart(itemName, cost){
 	}
 	</script>
 
+<script>
 
+function delivered(id){
+
+   alert( id + " -- Do you wanna marked as delivered?");
+   
+   $.post ("/edit", {id:id})
+   .done(function(data) {
+   alert("Data changed for: "+ id)
+   
+    location.reload();
+   });
+
+}
+
+
+function deleteOrder(id){
+
+   alert( id + " -- You sure you want to delete this order?");
+   
+   $.post ("/deleteOrder", {id:id})
+   .done(function(data) {
+   alert("Data deleted for: "+ id)
+   
+  location.reload();
+   });
+
+}
+
+</script>
+
+
+
+<script>
+
+$(document).on("pageshow","#driver",function(){ // When entering pagetwo
+
+  $.get( "/getDriverData", function( data ) {
+
+    // throw the data onto the manager page
+
+        $( "#driverOutput" ).html( data );
+
+ 
+
+    });
+
+});
+
+ 
+
+</script>
 
 
 
 <script>
 
 function returnName() {
- return 'basie';
+ return 'basia';
 }
 
 

@@ -44,36 +44,10 @@ app.get('/testSession', function (req, res) {
  
     res.send("hello" + temp);
  
-})
-//timestamp
-var log = console.log;
-
-console.log = function () {
-    var first_parameter = arguments[0];
-    var other_parameters = Array.prototype.slice.call(arguments, 1);
-
-    function formatConsoleDate (date) {
-        var hour = date.getHours();
-        var minutes = date.getMinutes();
-        var seconds = date.getSeconds();
-        var milliseconds = date.getMilliseconds();
-
-        return '[' +
-               ((hour < 10) ? '0' + hour: hour) +
-               ':' +
-               ((minutes < 10) ? '0' + minutes: minutes) +
-               ':' +
-               ((seconds < 10) ? '0' + seconds: seconds) +
-               '.' +
-               ('00' + milliseconds).slice(-3) +
-               '] ';
-    }
-
-    log.apply(console, [formatConsoleDate(new Date()) + first_parameter].concat(other_parameters));
-};
+});
 
   
-  // put the data in the database
+ /* // put the data in the database
   // pulling in mysql
   var mysql = require('mysql');
    // set up a connection  
@@ -85,12 +59,6 @@ console.log = function () {
   });
 
 
-app.get('/select',function(req,res,next){
-	con.query('SELECT * FROM customerorders', function(err, rs){ 	
-		res.render('select', {customerorders: rs});
-	});
-	
-});
 
 app.get('/form', function(req,res,next){
 	res.render('form' , {customerorders: {} });
@@ -104,37 +72,138 @@ app.post('/form', function(req,res,next){
 		
 });
 
+*/ 
 
-app.get('/delete', function(req,res,next){
-	con.query('DELETE FROM customerorders WHERE id= ?', req.query.id, function(err,rs){
-		res.redirect('/select');
-})
-		
+app.post('/deleteOrder', function (req, res) {
+   
+   var id = req.body.id
+  
+  // put the data in the database
+  // pulling in mysql
+  var mysql = require('mysql');
+   // set up a connection  
+  var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  database: "test",
+  password: ""
+  });
+   
+
+  con.connect(function(err) {
+  if (err) throw err;
+  con.query("DELETE FROM customerorders WHERE id="+id+";", function (err, result, fields) {
+    if (err) throw err;
+    res.send("status updated");
+
+  });
 });
+  
+  
+}); 
 
-app.get('/edit', function(req,res,next){
-	con.query('SELECT * FROM customerorders WHERE id= ?', req.query.id, function(err,rs){
-		res.render('form' , { customerorders: rs[0]});
-})
-		
+
+
+app.post('/edit', function (req, res) {
+   
+   var id = req.body.id
+  
+  // put the data in the database
+  // pulling in mysql
+  var mysql = require('mysql');
+   // set up a connection  
+  var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  database: "test",
+  password: ""
+  });
+   
+
+  con.connect(function(err) {
+  if (err) throw err;
+  con.query("UPDATE customerorders SET orderstatus='DELIVERED' WHERE id="+id+";", function (err, result, fields) {
+    if (err) throw err;
+    res.send("status updated");
+
+  });
 });
+  
+  
+}); 
 
-app.post('/edit', function(req,res,next){
-	var param= [
-	req.body, //data for update
-	req.query.id //condition for update
-	]
-	con.query('UPDATE customerorders SET ? WHERE id= ?', param, function(err,rs) {
-		res.redirect('/select');  //go to page select
-	})
+
+
+ 
+app.get('/getDriverData', function (req, res) {
+   
+  req.session.driver = 1
+  
+  req.session.email = ''
+  
+  // put the data in the database
+  // pulling in mysql
+  var mysql = require('mysql');
+   // set up a connection  
+  var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  database: "test",
+  password: ""
+  });
+   
+  
+
+
+  con.connect(function(err) {
+  if (err) throw err;
+  con.query("SELECT id, orderby, orderstatus FROM customerorders;", function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+
+// hold the data that we going to send back.
+var output = '';	
+	 
+	for(var i=0; i< result.length; i++){ 
+	    output = output +`
+	 
+	 
+	 <table>
+	 <tr>
+	 <td>ID</td>
+	 <td>Customer name:</td>
+	 <td>Order status</td>
+	 <td>Options</td>
+	 </tr>
+	  
+	 <tr>
+	 <td>`+result[i].id+`</td>
+	 <td>`+result[i].orderby+`</td>
+	 <td>`+ result[i].orderstatus +`</td>
+	 <td>
+	 <button onclick="delivered(`+result[i].id+`)">Change for Delivered</button><br>
+	 <button onclick="deleteOrder(`+result[i].id+`)">Delete</button><br>	
+	 
+	 </td>
+	 </tr>
+
+	 
+	 </table>
+	
+    `
+	    
+	
+    }
 	
 	
+	
+     // return the output variable
+    res.send(output);   
+  });
 });
-
-
-module.exports = app;
- 
- 
+  
+  
+}); 
  
 	
 app.get('/getManagerData', function (req, res) {
@@ -170,24 +239,33 @@ var output = '';
     // looping over the records
     for(var i=0; i< result.length; i++){
         output = output +`
-		
-	<div class="column">
-	<br>
-    <div class="container">
-	<br>
-	<div class="bottom-left">`+result[i].id+`</div>
-    <div class="bottom-left">`+result[i].orderby+`</div>
-   </div>
-	<div class="content"> 
- 
-	<p><textarea name="message" rows="3" cols="10">`+ result[i].items +`</textarea></p>
-    <p><a href="/deleteorder?id=item.id %>" onClick="return confirm('Are you sure?')">Delete</a>
-	<p><a href="/edit?id=<%= item.id %>">Edit</a>
-	</div>
-	</div>
 	
+    <table>
+	 <tr>
+	 <td>ID</td>
+	 <td>Customer name:</td>
+	 <td>Order status</td>
+	 <td>Options</td>
+	 </tr>
+	  
+	 <tr>
+	 <td>`+result[i].id+`</td>
+	 <td>`+result[i].orderby+`</td>
+	 <td>`+ result[i].items +`</td>
+	 <td>
+	 
+	 
+	 
+	 <button onclick="deleteOrder(`+result[i].id+`)">Delete</button><br>	
+	 
+	 </td>
+	 </tr>
+
+	 
+	 </table>
 	
     `
+
 	    
 	//calculate the total cost 
 	var items = result[i].items;
@@ -221,11 +299,107 @@ var output = '';
   
 });
 
-app.get('/deleteorder', function(req,res,next){
-	con.query('DELETE items FROM customerorders WHERE id= ?', req.query.id, function(err,rs){
-		   if (err) throw err;
-})
+
+
+app.post('/getRangeData', function (req, res) {
+   
+  //1 , 7 or 30 
+  var range= req.body.range;
+  
+  // put the data in the database
+  // pulling in mysql
+  var mysql = require('mysql');
+   // set up a connection  
+  var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  database: "test",
+  password: ""
+  
+  
+});
+ 
+// hold the data that we going to send back.
+var output = '';
+
+var sql="SELECT id, orderby,items FROM customerorders WHERE DATEDIFF(NOW(), `datestamp`) < "+range
+
+
+console.log("range is" + range);
+console.log(sql);
+
+
+  con.connect(function(err) {
+  if (err) throw err;
+  con.query(sql, function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+	
+	var runningTotal = 0;
+	     
+    // looping over the records
+    for(var i=0; i< result.length; i++){
+        output = output +`
+	
+    <table>
+	 <tr>
+	 <td>ID</td>
+	 <td>Customer name:</td>
+	 <td>Order status</td>
+	 <td>Options</td>
+	 </tr>
+	  
+	 <tr>
+	 <td>`+result[i].id+`</td>
+	 <td>`+result[i].orderby+`</td>
+	 <td>`+ result[i].items +`</td>
+	 <td>
+	 
+	 
+	 
+	 <button onclick="deleteOrder(`+result[i].id+`)">Delete</button><br>	
+	 
+	 </td>
+	 </tr>
+
+	 
+	 </table>
+	
+    `
+
+	    
+	//calculate the total cost 
+	var items = result[i].items;
+	
+	//breaking into three pieces
+	var singleTransaction = items.split(',');
+	
+	//loop over all the items in a single transaction
+	for (var x=0; x<singleTransaction.length; x++){
+		console.log(singleTransaction[x]);
 		
+		var singleProduct = singleTransaction[x].split('-');
+		var cost = Number(singleProduct[1])* Number(singleProduct[2]);
+		console.log(cost);
+		
+		//add to running total
+		runningTotal = Number(runningTotal) + Number(cost);
+		
+	}	
+		
+		console.log('----------------------Next transaction')
+    }
+	
+	output = output + `<h2><span style="background-color:#ba0c52 ;color:white;">Total order cost : ` + runningTotal+ `</span></h2>`;
+	     
+        
+    res.send(output);
+        
+    
+  });
+});
+  
+  
 });
 
 app.post('/checkTheLogin', function (req, res) {
@@ -397,11 +571,10 @@ app.post('/putInDatabase', function (req, res) {
   console.log(sql);
   con.query(sql, function (err, result) {
     if (err) throw err;
+    console.log("1 record inserted");
   });
 });
-
   res.send('Data went to the database');
-  res.redirect('/#login');
   
   
 })
