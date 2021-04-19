@@ -888,8 +888,6 @@ function delivered(id){
 
 
 function deleteOrder(id){
-
-   alert( id + " -- You sure you want to delete this order?");
    
    $.post ("/deleteOrder", {id:id})
    .done(function(data) {
