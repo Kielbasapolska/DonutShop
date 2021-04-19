@@ -298,7 +298,7 @@ html {
 .about-section {
   padding: 50px;
   text-align: center;
-  background-color: #474e5d;
+  background-color:#d93f87;
   color: white;
 }
 
@@ -313,7 +313,8 @@ html {
 }
 
 .title {
-  color: grey;
+	
+  color: #d93f87;
 }
 
 
